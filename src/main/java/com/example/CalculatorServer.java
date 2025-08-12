@@ -1,12 +1,9 @@
 package com.example;
 import java.rmi.*;
 import java.rmi.registry.*;
-public class CalculatorServer
-{
-    public static void main(String[] args)
-    {
-        try
-        {
+public class CalculatorServer { //The server that clients will connect to, it sets up the registry and handles all their calls
+    public static void main(String[] args) {
+        try {
             System.out.println("Calculator server Start...");
             Calculator calculator = new CalculatorImplementation();
             Registry registry = LocateRegistry.createRegistry(1900);

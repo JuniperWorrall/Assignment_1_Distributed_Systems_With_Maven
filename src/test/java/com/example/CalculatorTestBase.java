@@ -1,18 +1,36 @@
 package com.example;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class CalculatorTestBase {
-    protected Calculator calculator;
+    protected static Calculator calculator;
 
-    @BeforeEach
-    public void setUpBefore() throws Exception{
-        CalculatorTestServer.start();
-        calculator = CalculatorTestServer.getCalculator();
+    @BeforeAll
+    public static void setUpBefore() throws Exception{
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                CalculatorTestServer.start();
+                calculator = CalculatorTestServer.getCalculator();
+                calculator.registerClient();
+                return;
+            } catch (Exception e) {
+                CalculatorTestServer.stop();
+                Thread.sleep(500);
+                attempts++;
+                if(attempts >= 3) {
+                    throw e;
+                }
+            }
+        }
     }
 
-    @AfterEach
-    public void tearDownAfter() throws Exception{
+    @AfterAll
+    public static void tearDownAfter() throws Exception{
         CalculatorTestServer.stop();
+        Thread.sleep(100);
     }
 }
