@@ -1,42 +1,33 @@
 package com.example;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 public class CalculatorTestServer{
     private static Registry registry;
     private static Calculator calc;
-    private static final int PORT = 1099;
 
-    public static void start() throws Exception{
-        if(registry == null){
+    public static void start() throws Exception{ //Starts the test server
+        if(registry == null){ //If registry isn't available try to get it, if that doesn't work then create it
             try{
-                registry = LocateRegistry.getRegistry(PORT);
+                registry = LocateRegistry.getRegistry(1099);
                 registry.list();
             } catch(RemoteException e){
-                registry = LocateRegistry.createRegistry(PORT);
+                registry = LocateRegistry.createRegistry(1099);
             }
 
-            if(calc == null){
+            if(calc == null){ //Create skeleton then bind it to the registry
                 calc = new CalculatorImplementation();
                 registry.rebind("CalculatorTestServer", calc);
             }
         }
     }
 
-    public static void stop() throws Exception {
+    public static void stop() { //Stop the server
         if (registry != null && calc != null) {
             try{
-                registry.unbind("CalculatorTestServer");
+                registry.unbind("CalculatorTestServer"); //unbind the registry
             } catch(Exception ignored) {
-
-            }
-
-            try{
-                UnicastRemoteObject.unexportObject(calc, true);
-            } catch (Exception ignored) {
 
             }
 
@@ -45,7 +36,7 @@ public class CalculatorTestServer{
         }
     }
 
-    public static Calculator getCalculator() throws Exception {
+    public static Calculator getCalculator() throws Exception { //Get registry and look up the server
         Registry reg = LocateRegistry.getRegistry(1099);
         return (Calculator) reg.lookup("CalculatorTestServer");
     }
