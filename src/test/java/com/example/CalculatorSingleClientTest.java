@@ -69,4 +69,15 @@ public class CalculatorSingleClientTest extends CalculatorTestBase{
         assertTrue(duration >= 1000);
         assertTrue(calculator.isEmpty(ClientID));
     }
+
+    @Test
+    public void testIsEmpty() throws Exception { //Tests that delayPop works
+        boolean result = calculator.isEmpty(ClientID);
+        assertTrue(result);
+        calculator.pushValue(ClientID, 12);
+        result = calculator.isEmpty(ClientID);
+        assertFalse(result);
+        calculator.pop(ClientID);
+        assertTrue(calculator.isEmpty(ClientID));
+    }
 }
