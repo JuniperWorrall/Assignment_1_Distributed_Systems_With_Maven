@@ -17,3 +17,6 @@ where x is a positive integer.
 #### Running Tests
 If you are using intellij and maven you should be able to use the test button in lifecycle and it will run, if you are just using bash terminal run the command "java -cp "out:lib/junit-platform-console-standalone-1.11.3.jar" \
 org.junit.platform.console.ConsoleLauncher --scan-class-path". If that does not run any tests, then first run "javac -d out -cp "lib/junit-platform-console-standalone-1.11.3.jar" \$(find src/main/java src/test/java -name "*.java")". Then you should be able to run the previous command and it will show 11 out of 11 tests successful.
+
+#### Using the makefile
+You can also use "make compile" to compile all files, "make server" to initiate a server, "make client" to initiate a client, "make test" to inititate the unit test and "make clean" to empty the out folder. "make help" can remind you of these while in the terminal.
